@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Institution {
+  id        String   @id @default(cuid())
+  name      String
+  type      String   // "SCHOOL", "COLLEGE", "COACHING"
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          String         @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT"
+  institutionId String?
+  institution   Institution?   @relation(fields: [institutionId], references: [id])
+  classesTaught ClassSession[] @relation("TeacherClasses")
+  attendances   Attendance[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ClassSession {
+  id          String       @id @default(cuid())
+  title       String
+  teacherId   String
+  teacher     User         @relation("TeacherClasses", fields: [teacherId], references: [id])
+  startTime   DateTime
+  endTime     DateTime
+  quizzes     Quiz[]
+  attendances Attendance[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Quiz {
+  id             String       @id @default(cuid())
+  classSessionId String
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  question       String
+  options        String       // JSON-stringified array
+  correctAnswer  String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Attendance {
+  id             String       @id @default(cuid())
+  studentId      String
+  student        User         @relation(fields: [studentId], references: [id])
+  classSessionId String
+  classSession   ClassSession @relation(fields: [classSessionId], references: [id])
+  status         String       // "PRESENT", "ABSENT", "LATE"
+  timestamp      DateTime     @default(now())
+
+  @@unique([studentId, classSessionId])
+}
