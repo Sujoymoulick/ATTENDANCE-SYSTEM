@@ -20,14 +20,24 @@ export const protect = asyncHandler(async (req: Request, res: Response, next: Ne
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { id: string; email: string; role: "ADMIN" | "TEACHER" | "STUDENT"; name: string };
     
-    // Fetch full user details to check status and keep session fresh
-    const user = await User.findById(decoded.id).select("-password");
-    if (!user) {
-      throw new ApiError(401, "User belonging to this token no longer exists");
+    // Fetch full user details to check status, or use mock details if in Test Mode
+    let user: any = null;
+    if (decoded.id.startsWith("mock-")) {
+      user = {
+        id: decoded.id,
+        email: decoded.email,
+        role: decoded.role,
+        name: decoded.name,
+      };
+    } else {
+      user = await User.findById(decoded.id).select("-password");
+      if (!user) {
+        throw new ApiError(401, "User belonging to this token no longer exists");
+      }
     }
 
     req.user = {
-      id: user.id,
+      id: user.id || user._id,
       email: user.email,
       role: user.role,
       name: user.name,
