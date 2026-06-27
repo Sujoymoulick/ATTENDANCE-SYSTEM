@@ -1,0 +1,29 @@
+{
+  "name": "attendance-system-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky || true",
+    "lint:all": "npm run lint --prefix backend && npm run lint --prefix frontend",
+    "format:all": "npm run format --prefix backend && npm run format --prefix frontend"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.1"
+  },
+  "lint-staged": {
+    "backend/src/**/*.ts": [
+      "npm run lint --prefix backend",
+      "prettier --write"
+    ],
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
+      "npm run lint --prefix frontend",
+      "prettier --write"
+    ]
+  }
+}
