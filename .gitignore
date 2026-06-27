@@ -36,3 +36,7 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# macOS metadata files
+._*
+**/._*
