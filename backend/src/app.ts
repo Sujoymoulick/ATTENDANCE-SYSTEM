@@ -20,18 +20,26 @@ app.use(helmet());
 
 // CORS Configuration
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
-const allowedOrigins = [
-  CLIENT_URL,
-  CLIENT_URL.replace(/\/$/, ""),
-  "https://attendance-system-frontend-cyan.vercel.app",
-  "https://attendance-system-frontend-cyan.vercel.app/",
-  "http://localhost:3000",
-  "http://localhost:3000/"
-];
+const allowedOrigins = CLIENT_URL.split(",").map(url => url.trim().replace(/\/$/, ""));
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or Postman)
+      if (!origin) return callback(null, true);
+      
+      const normalizedOrigin = origin.replace(/\/$/, "");
+      const isAllowed = 
+        allowedOrigins.includes(normalizedOrigin) || 
+        normalizedOrigin.endsWith(".vercel.app") || 
+        /^http:\/\/localhost:\d+$/.test(normalizedOrigin);
+        
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(null, false); // Block CORS
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
