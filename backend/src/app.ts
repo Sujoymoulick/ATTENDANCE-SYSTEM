@@ -20,9 +20,18 @@ app.use(helmet());
 
 // CORS Configuration
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
+const allowedOrigins = [
+  CLIENT_URL,
+  CLIENT_URL.replace(/\/$/, ""),
+  "https://attendance-system-frontend-cyan.vercel.app",
+  "https://attendance-system-frontend-cyan.vercel.app/",
+  "http://localhost:3000",
+  "http://localhost:3000/"
+];
+
 app.use(
   cors({
-    origin: [CLIENT_URL, "https://frontend.vercel.app"],
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

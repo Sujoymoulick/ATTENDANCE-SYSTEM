@@ -5,7 +5,8 @@
   "scripts": {
     "prepare": "husky || true",
     "lint:all": "npm run lint --prefix backend && npm run lint --prefix frontend",
-    "format:all": "npm run format --prefix backend && npm run format --prefix frontend"
+    "format:all": "npm run format --prefix backend && npm run format --prefix frontend",
+    "db:start": "mongod --dbpath ./mongodb-data"
   },
   "workspaces": [
     "frontend",

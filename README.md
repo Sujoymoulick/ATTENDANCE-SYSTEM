@@ -12,7 +12,6 @@ A full-stack, role-based Attendance Management System designed to be fast, secur
 attendance-system/
 ├── frontend/             # Next.js client application
 ├── backend/              # Node.js + Express API server
-├── docker-compose.yml    # Multi-container local execution
 └── README.md             # This guide
 ```
 
@@ -21,9 +20,10 @@ attendance-system/
 ## 2. Local Run Guide (Direct)
 
 ### Step 1: Start Database
-Verify a local MongoDB instance is active on port `27017`. If using Docker, spin up the database container:
+A local folder named `mongodb-data/` has been set up at the root of the workspace to isolate and store all local MongoDB data.
+To start the database locally, ensure you have MongoDB installed on your host machine and run:
 ```bash
-docker-compose up -d mongodb
+npm run db:start
 ```
 
 ### Step 2: Configure & Run Backend
@@ -55,17 +55,6 @@ docker-compose up -d mongodb
    npm run dev
    ```
    *The client runs on port `3000`. Navigate to [http://localhost:3000](http://localhost:3000) to login.*
-
----
-
-## 3. Local Run Guide (Docker Compose)
-To compile and spin up the complete database, backend, and frontend stack in isolated containers, run:
-```bash
-docker-compose up --build
-```
-* MongoDB: `mongodb://localhost:27017`
-* Backend API: `http://localhost:5000/api/v1`
-* Frontend App: `http://localhost:3000`
 
 ---
 

@@ -61,16 +61,7 @@ npm start
 
 ---
 
-## 4. Docker Guide
-To build and run the backend image:
-```bash
-docker build -t attendance-backend .
-docker run -p 5000:5000 --env MONGODB_URI=mongodb://host.docker.internal:27017/attendance attendance-backend
-```
-
----
-
-## 5. Render Deployment
+## 4. Render Deployment
 1. Set up a Web Service on Render.
 2. Select your repository, and set the **root directory** to `backend`.
 3. Build Command: `npm install && npm run build`

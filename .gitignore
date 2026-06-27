@@ -40,3 +40,7 @@ lerna-debug.log*
 # macOS metadata files
 ._*
 **/._*
+
+# MongoDB local data folder
+mongodb-data/
+
