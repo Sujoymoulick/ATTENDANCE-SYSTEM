@@ -14,7 +14,7 @@ const TEST_ADMIN_PASSWORD = process.env.TEST_ADMIN_PASSWORD || "password";
 const TEST_TEACHER_EMAIL = process.env.TEST_TEACHER_EMAIL || "teacher@test.com";
 const TEST_TEACHER_PASSWORD = process.env.TEST_TEACHER_PASSWORD || "password";
 const TEST_STUDENT_EMAIL = process.env.TEST_STUDENT_EMAIL || "student@test.com";
-const TEST_STUDENT_PASSWORD = process.env.TEST_STUDENT_PASSWORD || "password";
+const TEST_STUDENT_PASSWORD = process.env.TEST_STUDENT_PASSWRD || process.env.TEST_STUDENT_PASSWORD || "password";
 
 const generateToken = (payload: { id: string; email: string; role: string; name: string }) => {
   return jwt.sign(payload, JWT_SECRET, {
